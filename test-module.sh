@@ -33,7 +33,7 @@ podman run -i \
     --network=host \
     -v .:/home/pwuser/ns8-module:z \
     --volume=site-packages:/home/pwuser/.local/lib/python3.8/site-packages:Z \
-    --name rf-core-runner ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable:17.5.2 \
+    --name rf-core-runner ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable:18.3.0 \
     bash -l -s <<EOF
 set -e
 echo "$ssh_key" > /home/pwuser/ns8-key
