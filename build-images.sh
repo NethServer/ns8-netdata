@@ -40,7 +40,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=1" \
     --label="org.nethserver.flags=no_data_backup" \
-    --label="org.nethserver.images=docker.io/netdata/netdata:v1.47.5" \
+    --label="org.nethserver.images=docker.io/netdata/netdata:v2.1.1" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
