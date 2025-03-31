@@ -1,0 +1,46 @@
+#
+# Copyright (C) 2025 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+#
+# This systemd unit starts a clamscan instance using Podman.
+# Most parts of this file come from podman-generate-systemd.
+#
+
+[Unit]
+Description=clamscan server
+After=network.target redis.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=/var/lib/nethserver/%N/state/environment
+WorkingDirectory=/var/lib/nethserver/%N/state
+SyslogIdentifier=%N
+Restart=always
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/%N.pid %t/%N.cid
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --init \
+    --privileged \
+    --conmon-pidfile %t/%N.pid \
+    --cidfile %t/%N.cid \
+    --cgroups=no-conmon \
+    --replace --name=%N \
+    --env 'CLAMAV_NO_MILTERD=false' \
+    --env 'FRESHCLAM_CHECKS=6' \
+    --volume %N-database:/var/lib/clamav:z \
+    --volume %N-sockets:/run/clamav:z \
+    --volume %N-etc:/etc/clamav:z \
+    ${CLAMSCAN_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/%N.cid -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/%N.cid
+#ExecReload=/usr/local/bin/runagent -m %N expand-configuration
+ExecReload=/usr/local/bin/runagent -m %N expand-smarthost
+ExecReload=/usr/bin/podman kill -s HUP %N
+PIDFile=%t/%N.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

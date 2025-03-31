@@ -9,12 +9,8 @@ set -e
 # Redirect any output to the journal (stderr)
 exec 1>&2
 
-if [ -n "$(ls -A /run/log/journal)" ]; then
-    ln -vsf /run/log/journal .
-else
-    ln -vsf /var/log/journal .
-fi
 
-install -m 644 "${AGENT_INSTALL_DIR}/netdata.service" "/etc/systemd/system/${MODULE_ID}.service"
+
+install -m 644 "${AGENT_INSTALL_DIR}/clamscan.service" "/etc/systemd/system/${MODULE_ID}.service"
 systemctl daemon-reload
 systemctl enable --now "${MODULE_ID}.service"
