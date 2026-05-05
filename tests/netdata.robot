@@ -61,4 +61,4 @@ Ping netdata
     ${out}  ${err}  ${rc} =    Execute Command    curl -k -f -H 'Host: ${NETDATA_FQDN}' https://127.0.0.1/${NETDATA_PATH}/
     ...    return_rc=True  return_stdout=True  return_stderr=True
     Should Be Equal As Integers    ${rc}  0
-    Should Contain    ${out}    &lt;title&gt;Netdata
+    Should Contain    ${out}    <title>Netdata
