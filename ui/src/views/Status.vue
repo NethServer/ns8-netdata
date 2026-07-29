@@ -410,7 +410,7 @@ export default {
       this.status = taskResult.output;
       this.loading.getStatus = false;
     },
-      async getConfig() {
+    async getConfig() {
       this.loading.getStatus = true;
       this.error.getStatus = "";
       const taskAction = "get-configuration";
